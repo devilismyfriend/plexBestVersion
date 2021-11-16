@@ -75,9 +75,12 @@ def find_content(server, section):
             for path in pathList:
                 if os.path.isfile(path.replace(plexPath,localPath)):
                     #check if path.replace(plexPath,localPath) was made 30 days ago
-                    if datetime.datetime.now() - datetime.datetime.fromtimestamp(os.path.getmtime(path.replace(plexPath,localPath))) > datetime.timedelta(days=30):
-                        print ('removing' + path +'. keeping  ' + str(bestVersion) + ' ' + str(bestBitrate) + ' ' + bestPath)
-                        os.remove(path.replace(plexPath,localPath))
+                    if datetime.datetime.now() - datetime.datetime.fromtimestamp(os.path.getmtime(path.replace(plexPath,localPath))) > datetime.timedelta(days=daysToKeep):
+                        if dryRun == False:
+                            print ('removing' + path +'. keeping  ' + str(bestVersion) + ' ' + str(bestBitrate) + ' ' + bestPath)
+                            os.remove(path.replace(plexPath,localPath))
+                        else:
+                            print('would have removed' + path + '. would have kept  ' + str(bestVersion) + ' ' + str(bestBitrate) + ' ' + bestPath)
         if item.type == 'show':
             for episode in dict[key].keys():
                 if None not in dict[key][episode]['res']:
@@ -98,21 +101,27 @@ def find_content(server, section):
                     #delete all of the files in the pathList
                     for path in pathList:
                         if os.path.isfile(path.replace(plexPath,localPath)):
-                            if datetime.datetime.now() - datetime.datetime.fromtimestamp(os.path.getmtime(path.replace(plexPath,localPath))) > datetime.timedelta(days=30):
-                                print ('removing' + path +'. keeping  ' + str(bestVersion) + ' ' + str(bestBitrate) + ' ' + bestPath)
-                                os.remove(path.replace(plexPath,localPath))
+                            if datetime.datetime.now() - datetime.datetime.fromtimestamp(os.path.getmtime(path.replace(plexPath,localPath))) > datetime.timedelta(days=daysToKeep):
+                                if dryRun == False:
+                                    print ('removing' + path +'. keeping  ' + str(bestVersion) + ' ' + str(bestBitrate) + ' ' + bestPath)
+                                    os.remove(path.replace(plexPath,localPath))
+                                else:
+                                    print('would have removed' + path + '. would have kept  ' + str(bestVersion) + ' ' + str(bestBitrate) + ' ' + bestPath)
 
 #docker path for plex
 plexPath = '/media/'
 #local path for the PC I'm running it on
 localPath = 'F:/My Drive/'
 #IP for the plex server
-plexIP = '192.168.1.78'
+plexIP = '1.1.1.1'
 #Token for Plex server
 plexToken = 'token'
 #List of libraries to scan and apply deletion
 LibrariesToScan = ['Movies', 'TV Shows']
-
+#dry run, if true, will not delete anything, True or False
+dryRun = True #False
+#days to keep files
+daysToKeep = 30
 plex = connect_to_plex(plexIP,plexToken)
 for section in LibrariesToScan:
     find_content(plex, section)
