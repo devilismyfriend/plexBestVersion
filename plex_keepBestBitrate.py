@@ -1,4 +1,11 @@
-from plexapi.server import PlexServer
+#if plexapi doesn't exist, install it
+try:
+    from plexapi.server import PlexServer
+except ImportError:
+    print('plexapi is not installed, installing now, if this is failling, install PlexAPI into pip')
+    import pip
+    pip.main(['install', 'PlexAPI'])
+    from plexapi.server import PlexServer
 import sys
 import os
 import time
