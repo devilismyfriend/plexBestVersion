@@ -14,11 +14,12 @@ import argparse
 import logging
 import logging.handlers
 
+#function to connect to plex api
 def connect_to_plex(server_name, token):
     plex = PlexServer('http://' + server_name + ':32400', token)
     return plex
 
-#function to find content with 4k and 1080p and print them
+#function to find content with highest bitrate and delete the rest
 def find_content(server, section):
     dict = {}
     for item in server.library.section(section).all():
