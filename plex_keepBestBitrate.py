@@ -100,12 +100,16 @@ def find_content(server, section):
                             if datetime.datetime.now() - datetime.datetime.fromtimestamp(os.path.getmtime(path.replace(plexPath,localPath))) > datetime.timedelta(days=30):
                                 print ('removing' + path +'. keeping  ' + str(bestVersion) + ' ' + str(bestBitrate) + ' ' + bestPath)
                                 os.remove(path.replace(plexPath,localPath))
-                                  
-#connect to plex server
+
+#docker path for plex
 plexPath = '/media/'
+#local path for the PC I'm running it on
 localPath = 'F:/My Drive/'
+#IP for the plex server
 plexIP = '192.168.1.78'
-plexToken = 'ZUzMV_5BNYcfUf5zUM-A'
+#Token for Plex server
+plexToken = 'token'
+#List of libraries to scan and apply deletion
 LibrariesToScan = ['Movies', 'TV Shows']
 
 plex = connect_to_plex(plexIP,plexToken)
